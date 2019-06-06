@@ -10,7 +10,7 @@ chef_ingredient 'chef-server' do
   action :install
   version node['chef_server_wrapper']['version']
   accept_license node['chef_server_wrapper']['accept_license'].to_s == 'true' ? true : false
-  notifies :reconfigure, 'chef_ingredient[chef-server]'
+  notifies :reconfigure, 'chef_ingredient[chef-server]', :immediately
 end
 
 node['chef_server_wrapper']['chef_users'].each do |name, params|
