@@ -10,7 +10,11 @@ chef_ingredient 'chef-server' do
   action :install
   version node['chef_server_wrapper']['version']
   accept_license node['chef_server_wrapper']['accept_license'].to_s == 'true' ? true : false
-  notifies :reconfigure, 'chef_ingredient[chef-server]', :immediately
+end
+
+execute 'chef-server-reconfigure-first-boot' do
+  command 'chef-server-ctl reconfigure'
+  not_if { File.exist?('/etc/opscode/pivotal.rb') }
 end
 
 node['chef_server_wrapper']['chef_users'].each do |name, params|
