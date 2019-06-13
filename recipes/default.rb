@@ -48,7 +48,7 @@ node['chef_server_wrapper']['chef_orgs'].each do |name, params|
   end
 end
 
-template node['chef_server_wrapper']['starter_pack_path'] do
+template node['chef_server_wrapper']['starter_pack_knife_rb_path'] do
   source 'knife.rb.erb'
   variables(
     user: node['chef_server_wrapper']['starter_pack_user'],
