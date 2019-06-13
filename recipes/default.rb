@@ -4,6 +4,20 @@
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
 
+remote_file '/bin/jq' do
+  source node['chef_server_wrapper']['jq_url']
+  mode '0755'
+end
+
+hostname = if node['chef_server_wrapper']['fqdn'] != ''
+             node['chef_server_wrapper']['fqdn']
+           elsif node['cloud']
+             node['cloud']['public_ipv4_addrs'].first
+           else
+             node['ipaddress']
+           end
+
+
 chef_ingredient 'chef-server' do
   channel node['chef_server_wrapper']['channel'].to_sym
   config node['chef_server_wrapper']['config']
@@ -32,4 +46,13 @@ node['chef_server_wrapper']['chef_orgs'].each do |name, params|
     org_full_name params['org_full_name']
     admins params['admins']
   end
+end
+
+template node['chef_server_wrapper']['starter_pack_path'] do
+  source 'knife.rb.erb'
+  variables(
+    user: node['chef_server_wrapper']['starter_pack_user'],
+    org: node['chef_server_wrapper']['starter_pack_org'],
+    fqdn: hostname
+  )
 end
