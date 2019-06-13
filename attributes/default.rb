@@ -6,7 +6,6 @@ default['chef_server_wrapper']['data_collector_token'] = nil
 default['chef_server_wrapper']['config'] = ''
 default['chef_server_wrapper']['chef_users'] = {}
 default['chef_server_wrapper']['chef_orgs'] = {}
-default['chef_server_wrapper']['starter_pack_path'] = '/tmp/chef-serter-pack.tar.gz'
 default['chef_server_wrapper']['starter_pack_knife_rb_path'] = '/tmp/knife.rb'
 default['chef_server_wrapper']['starter_pack_user'] = ''
 default['chef_server_wrapper']['starter_pack_org'] = ''
