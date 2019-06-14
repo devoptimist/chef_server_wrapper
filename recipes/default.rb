@@ -39,7 +39,7 @@ hostname = if node['chef_server_wrapper']['fqdn'] != ''
              node['ipaddress']
            end
 
-config += if hostame != node['cloud']['public_ipv4_addrs'].first && hostname != node['ipaddress']
+config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname != node['ipaddress']
             <<~EOF
             api_fqdn = #{hostname}
 
