@@ -50,7 +50,7 @@ config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname !=
 
 chef_ingredient 'chef-server' do
   channel node['chef_server_wrapper']['channel'].to_sym
-  config node['chef_server_wrapper']['config']
+  config config
   action :install
   version node['chef_server_wrapper']['version']
   accept_license node['chef_server_wrapper']['accept_license'].to_s == 'true' ? true : false
