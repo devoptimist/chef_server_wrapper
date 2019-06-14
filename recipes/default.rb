@@ -4,7 +4,7 @@
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
 
-config = default['chef_server_wrapper']['config']
+config = node['chef_server_wrapper']['config']
 
 config += if node['chef_server_wrapper']['data_collector_url'] != ''
             <<~EOF
