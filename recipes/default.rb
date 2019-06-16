@@ -14,16 +14,19 @@ config += if node['chef_server_wrapper']['data_collector_url'] != ''
 
             EOF
           else
-            ''
+            <<~EOF
+            EOF
+
           end
 
-config += if node['chef_server_wrapper']['token'] != ''
+config += if node['chef_server_wrapper']['data_collector_token'] != ''
             <<~EOF
-            data_collector['token'] =  #{node['chef_server_wrapper']['token']}
+            data_collector['token'] =  '#{node['chef_server_wrapper']['data_collector_token']}'
 
             EOF
           else
-            ''
+            <<~EOF
+            EOF
           end
 
 remote_file '/bin/jq' do
@@ -41,17 +44,18 @@ hostname = if node['chef_server_wrapper']['fqdn'] != ''
 
 config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname != node['ipaddress']
             <<~EOF
-            api_fqdn = #{hostname}
+            api_fqdn = '#{hostname}'
 
             EOF
           else
-            ''
+            <<~EOF
+            EOF
           end
 
 chef_ingredient 'chef-server' do
   channel node['chef_server_wrapper']['channel'].to_sym
   config config
-  action :install
+  action %i(install reconfigure)
   version node['chef_server_wrapper']['version']
   accept_license node['chef_server_wrapper']['accept_license'].to_s == 'true' ? true : false
 end
