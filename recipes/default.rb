@@ -6,6 +6,19 @@
 
 config = node['chef_server_wrapper']['config']
 
+config += if node['chef_server_wrapper']['supermarket_url'] != ''
+            <<~EOF
+            oc_id['applications'] ||= {}
+            oc_id['applications']['supermarket'] = {
+              'redirect_uri' => '#{node['chef_server_wrapper']['supermarket_url']}/auth/chef_oauth2/callback'
+            }
+
+            EOF
+          else
+            <<~EOF
+            EOF
+          end
+
 config += if node['chef_server_wrapper']['data_collector_url'] != ''
             <<~EOF
             data_collector['root_url'] = '#{node['chef_server_wrapper']['data_collector_url']}/data-collector/v0/'
