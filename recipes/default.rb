@@ -4,7 +4,19 @@
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
 
-config = node['chef_server_wrapper']['config']
+hostname = if node['chef_server_wrapper']['fqdn'] != ''
+             node['chef_server_wrapper']['fqdn']
+           elsif node['cloud']
+             node['cloud']['public_ipv4_addrs'].first
+           else
+             node['ipaddress']
+           end
+
+if node['chef_server_wrapper']['config'].respond_to?('keys')
+  config = node['chef_server_wrapper']['config'][hostname]
+else
+  config = node['chef_server_wrapper']['config']
+end
 
 config += if node['chef_server_wrapper']['supermarket_url'] != ''
             <<~EOF
@@ -47,13 +59,7 @@ remote_file '/bin/jq' do
   mode '0755'
 end
 
-hostname = if node['chef_server_wrapper']['fqdn'] != ''
-             node['chef_server_wrapper']['fqdn']
-           elsif node['cloud']
-             node['cloud']['public_ipv4_addrs'].first
-           else
-             node['ipaddress']
-           end
+
 
 config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname != node['ipaddress']
             <<~EOF
