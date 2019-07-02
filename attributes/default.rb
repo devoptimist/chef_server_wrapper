@@ -13,3 +13,4 @@ default['chef_server_wrapper']['starter_pack_user'] = ''
 default['chef_server_wrapper']['starter_pack_org'] = ''
 default['chef_server_wrapper']['fqdn'] = ''
 default['chef_server_wrapper']['jq_url'] = 'https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64'
+default['chef_server_wrapper']['cloud_public_address'] = false

@@ -6,13 +6,11 @@
 
 hostname = if node['chef_server_wrapper']['fqdn'] != ''
              node['chef_server_wrapper']['fqdn']
-           elsif node['cloud']
+           elsif node['cloud'] && node['chef_server_wrapper']['cloud_public_address']
              node['cloud']['public_ipv4_addrs'].first
            else
              node['ipaddress']
            end
-
-config = ''
 
 if node['chef_server_wrapper']['config_block'] != {}
   config = node['chef_server_wrapper']['config_block'][hostname]
