@@ -12,6 +12,8 @@ hostname = if node['chef_server_wrapper']['fqdn'] != ''
              node['ipaddress']
            end
 
+config = ''
+
 if node['chef_server_wrapper']['config_block'] != {}
   config = node['chef_server_wrapper']['config_block'][hostname]
 else
