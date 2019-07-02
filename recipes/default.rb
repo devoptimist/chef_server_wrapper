@@ -12,7 +12,7 @@ hostname = if node['chef_server_wrapper']['fqdn'] != ''
              node['ipaddress']
            end
 
-if node['chef_server_wrapper']['config_block'] ! = {}
+if node['chef_server_wrapper']['config_block'] != {}
   config = node['chef_server_wrapper']['config_block'][hostname]
 else
   config = node['chef_server_wrapper']['config']
