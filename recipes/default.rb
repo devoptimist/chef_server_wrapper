@@ -14,9 +14,12 @@ hostname = if node['chef_server_wrapper']['fqdn'] != ''
 
 if node['chef_server_wrapper']['config_block'] != {}
   config = node['chef_server_wrapper']['config_block'][hostname]
-else
-  config = node['chef_server_wrapper']['config']
 end
+
+config += <<~EOF
+
+  #{node['chef_server_wrapper']['config']}
+  EOF
 
 config += if node['chef_server_wrapper']['supermarket_url'] != ''
             <<~EOF
