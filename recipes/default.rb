@@ -12,9 +12,11 @@ hostname = if node['chef_server_wrapper']['fqdn'] != ''
              node['ipaddress']
            end
 
-if node['chef_server_wrapper']['config_block'] != {}
-  config = node['chef_server_wrapper']['config_block'][hostname]
-end
+config = if node['chef_server_wrapper']['config_block'] != {}
+           node['chef_server_wrapper']['config_block'][hostname]
+         else
+           ''
+         end
 
 config += <<~EOF
 
@@ -62,8 +64,6 @@ remote_file '/bin/jq' do
   mode '0755'
 end
 
-
-
 config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname != node['ipaddress']
             <<~EOF
             api_fqdn = '#{hostname}'
@@ -76,15 +76,38 @@ config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname !=
 
 chef_ingredient 'chef-server' do
   channel node['chef_server_wrapper']['channel'].to_sym
-  config config
-  action %i(install reconfigure)
   version node['chef_server_wrapper']['version']
-  accept_license node['chef_server_wrapper']['accept_license'].to_s == 'true' ? true : false
+  config config
+  accept_license node['chef_server_wrapper']['accept_license'].to_s == 'true'
+  action %i(install reconfigure)
 end
 
 execute 'chef-server-reconfigure-first-boot' do
   command 'chef-server-ctl reconfigure'
   not_if { File.exist?('/etc/opscode/pivotal.rb') }
+end
+
+# we offer suse linux chef server packages but no
+# addon packages are build for suse
+if node['platform_family'] == 'suse' && node['chef_server_wrapper']['addons'] != {}
+  platform = 'el'
+  platform_version = '7'
+end
+
+node['chef_server_wrapper']['addons'].each do |addon, options|
+  chef_ingredient addon do
+    action :upgrade
+    channel options['channel'].to_sym || :stable
+    version options['version'] || :latest
+    config options['config'] || ''
+    accept_license node['chef_server_wrapper']['accept_license'].to_s == 'true'
+    platform platform if platform
+    platform_version platform_version if platform_version
+  end
+
+  ingredient_config addon do
+    notifies :reconfigure, "chef_ingredient[#{addon}]", :immediately
+  end
 end
 
 node['chef_server_wrapper']['chef_users'].each do |name, params|

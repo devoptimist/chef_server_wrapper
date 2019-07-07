@@ -4,6 +4,7 @@ default['chef_server_wrapper']['accept_license'] = true
 default['chef_server_wrapper']['supermarket_url'] = ''
 default['chef_server_wrapper']['data_collector_url'] = ''
 default['chef_server_wrapper']['data_collector_token'] = ''
+default['chef_server_wrapper']['addons'] = {}
 default['chef_server_wrapper']['config'] = ''
 default['chef_server_wrapper']['config_block'] = {}
 default['chef_server_wrapper']['chef_users'] = {}
