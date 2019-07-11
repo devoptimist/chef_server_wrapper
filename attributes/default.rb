@@ -15,3 +15,8 @@ default['chef_server_wrapper']['starter_pack_org'] = ''
 default['chef_server_wrapper']['fqdn'] = ''
 default['chef_server_wrapper']['jq_url'] = 'https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64'
 default['chef_server_wrapper']['cloud_public_address'] = false
+
+# SSL certificate related attribures
+default['chef_server_wrapper']['cert'] = ''
+default['chef_server_wrapper']['cert_key'] = ''
+default['chef_server_wrapper']['cert_directory'] = '/etc/ssl/private'
