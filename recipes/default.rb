@@ -23,9 +23,8 @@ config += <<~EOF
   #{node['chef_server_wrapper']['config']}
   EOF
 
-
 if node['chef_server_wrapper']['cert'] != '' &&
-    node['chef_server_wrapper']['cert_key'] != ''
+   node['chef_server_wrapper']['cert_key'] != ''
 
   cert_dir = node['chef_server_wrapper']['cert_directory']
   cert_path = "#{cert_dir}/#{hostname}.crt"
@@ -36,7 +35,7 @@ if node['chef_server_wrapper']['cert'] != '' &&
     owner 'root'
     group 'root'
   end
-    
+
   file cert_path do
     content node['chef_server_wrapper']['cert']
     mode '0644'
