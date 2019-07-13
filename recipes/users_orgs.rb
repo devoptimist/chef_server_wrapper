@@ -1,3 +1,11 @@
+hostname = if node['chef_server_wrapper']['fqdn'] != ''
+             node['chef_server_wrapper']['fqdn']
+           elsif node['cloud'] && node['chef_server_wrapper']['cloud_public_address']
+             node['cloud']['public_ipv4_addrs'].first
+           else
+             node['ipaddress']
+           end
+
 node['chef_server_wrapper']['chef_users'].each do |name, params|
   chef_user name do
     first_name params['first_name']
