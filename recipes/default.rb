@@ -142,3 +142,9 @@ node['chef_server_wrapper']['addons'].each do |addon, options|
     notifies :reconfigure, "chef_ingredient[#{addon}]", :immediately
   end
 end
+
+if node['chef_server_wrapper']['chef_orgs'] != {} &&
+   node['chef_server_wrapper']['chef_users'] != {}
+
+  include_recipe 'users_orgs'
+end
