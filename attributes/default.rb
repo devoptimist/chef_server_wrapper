@@ -1,5 +1,5 @@
 default['chef_server_wrapper']['channel'] = :stable
-default['chef_server_wrapper']['version'] = '12.19.31'
+default['chef_server_wrapper']['version'] = '13.0.17'
 default['chef_server_wrapper']['accept_license'] = true
 default['chef_server_wrapper']['supermarket_url'] = ''
 default['chef_server_wrapper']['data_collector_url'] = ''
