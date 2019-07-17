@@ -172,3 +172,15 @@ if node['chef_server_wrapper']['chef_orgs'] != {} &&
     )
   end
 end
+
+template node['chef_server_wrapper']['chef_server_details_script_path'] do
+  extend ChefServerWrapper::ServerHelpers
+  source 'chef_server_details.sh.erb'
+  variables(
+    user: node['chef_server_wrapper']['starter_pack_user'],
+    org: node['chef_server_wrapper']['starter_pack_org'],
+    client_pem: lazy { read_pem('client', node['chef_server_wrapper']['starter_pack_user']).inspect },
+    validation_pem: lazy { read_pem('org', node['chef_server_wrapper']['starter_pack_org']).inspect },
+    fqdn: hostname
+  )
+end

@@ -1,0 +1,27 @@
+#!/bin/bash
+set -eu -o pipefail
+<% if @org != "" && @user != "" %>
+  VAR1=$(cat <<EOF
+{
+  "validation_pem": <%= @validation_pem %>,
+  "validation_client_name": "<%= @org %>-validation",
+  "client_pem": <%= @client_pem %>,
+  "chef_server_url": "https://<%= @fqdn %>/organisations/<%= @org %>",
+  "node_name": "<%= @user %>"
+}
+EOF
+  )
+<% else %>
+  VAR1=$(cat <<EOF
+{
+  "validation_pem": "",
+  "validation_client_name": "",
+  "client_pem": "",
+  "chef_server_url": "",
+  "node_name": ""
+}
+EOF
+  )
+<% end %>
+
+echo "${VAR1}" | jq '.'
