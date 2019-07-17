@@ -10,7 +10,7 @@ module ChefServerWrapper
       if ::File.file?(path)
         ::File.read(path)
       else
-        ""
+        ''
       end
     end
   end
