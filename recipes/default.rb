@@ -60,7 +60,7 @@ config += if node['chef_server_wrapper']['supermarket_url'] != ''
             <<~EOF
             oc_id['applications'] ||= {}
             oc_id['applications']['supermarket'] = {
-              'redirect_uri' => '#{node['chef_server_wrapper']['supermarket_url']}/auth/chef_oauth2/callback'
+              'redirect_uri' => 'https://#{node['chef_server_wrapper']['supermarket_url']}/auth/chef_oauth2/callback'
             }
 
             EOF
