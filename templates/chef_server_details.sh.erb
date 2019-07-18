@@ -6,7 +6,8 @@ set -eu -o pipefail
   "validation_pem": <%= @validation_pem %>,
   "validation_client_name": "<%= @org %>-validation",
   "client_pem": <%= @client_pem %>,
-  "chef_server_url": "https://<%= @fqdn %>/organizations/<%= @org %>",
+  "org_url": "https://<%= @fqdn %>/organizations/<%= @org %>",
+  "base_url": "https://<%= @fqdn %>",
   "node_name": "<%= @user %>"
 }
 EOF
@@ -17,7 +18,8 @@ EOF
   "validation_pem": "",
   "validation_client_name": "",
   "client_pem": "",
-  "chef_server_url": "",
+  "org_url": "",
+  "base_url": "https://<%= @fqdn %>",
   "node_name": ""
 }
 EOF
