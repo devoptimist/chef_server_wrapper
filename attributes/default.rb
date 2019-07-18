@@ -14,7 +14,7 @@ default['chef_server_wrapper']['tmp_path'] = '/var/tmp'
 default['chef_server_wrapper']['starter_pack_knife_rb_path'] =
   "#{node['chef_server_wrapper']['tmp_path']}/knife.rb"
 
-default['chef_server_wrapper']['chef_server_details_script_path'] =
+default['chef_server_wrapper']['details_script_path'] =
   "#{node['chef_server_wrapper']['tmp_path']}/chef_server_details.sh"
 
 default['chef_server_wrapper']['starter_pack_user'] = ''

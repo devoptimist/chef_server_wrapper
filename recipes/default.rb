@@ -173,7 +173,7 @@ if node['chef_server_wrapper']['chef_orgs'] != {} &&
   end
 end
 
-template node['chef_server_wrapper']['chef_server_details_script_path'] do
+template node['chef_server_wrapper']['details_script_path'] do
   extend ChefServerWrapper::ServerHelpers
   source 'chef_server_details.sh.erb'
   variables(
