@@ -27,7 +27,7 @@ default['chef_server_wrapper']['jq_url'] = 'https://github.com/stedolan/jq/relea
 default['chef_server_wrapper']['cloud_public_address'] = false
 
 # frontend secrets
-default['chef_server_wrapper']['frontend_secrets'] = ''
+default['chef_server_wrapper']['frontend_secrets'] = {}
 
 # SSL certificate related attribures
 default['chef_server_wrapper']['cert'] = ''

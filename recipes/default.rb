@@ -120,20 +120,24 @@ config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname !=
 template '/etc/opscode/private-chef-secrets.json' do
   source 'private-chef-secrets.json.erb'
   variables(
-    data: node['chef_server_wrapper']['frontend_secrets']
+    veil_hasher_secret: node['chef_server_wrapper']['frontend_secrets']['veil_hasher_secret'],
+    veil_hasher_salt: node['chef_server_wrapper']['frontend_secrets']['veil_hasher_salt'],
+    veil_cipher_key: node['chef_server_wrapper']['frontend_secrets']['veil_cipher_key'],
+    veil_cipher_iv: node['chef_server_wrapper']['frontend_secrets']['veil_cipher_iv'],
+    veil_credentials: node['chef_server_wrapper']['frontend_secrets']['veil_credentials']
   )
-  only_if { node['chef_server_wrapper']['frontend_secrets'] != '' }
+  not_if { node['chef_server_wrapper']['frontend_secrets'].empty? }
 end
 
 directory '/var/opt/opscode/upgrades/' do
   action :create
   recursive true
-  only_if { node['chef_server_wrapper']['frontend_secrets'] != '' }
+  not_if { node['chef_server_wrapper']['frontend_secrets'].empty? }
 end
 
 file '/var/opt/opscode/bootstrapped' do
   action :create_if_missing
-  only_if { node['chef_server_wrapper']['frontend_secrets'] != '' }
+  not_if { node['chef_server_wrapper']['frontend_secrets'].empty? }
 end
 
 chef_ingredient 'chef-server' do
