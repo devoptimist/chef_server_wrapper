@@ -4,7 +4,7 @@ maintainer_email 'sbrown@chef.io'
 license 'Apache-2.0'
 description 'Installs/Configures a chef server'
 long_description 'Installs/Configures a chef server'
-version '0.1.33'
+version '0.1.34'
 chef_version '>= 13.0'
 depends 'chef-ingredient'
 

@@ -17,7 +17,7 @@ default['chef_server_wrapper']['starter_pack_knife_rb_path'] =
 default['chef_server_wrapper']['details_script_path'] =
   "#{node['chef_server_wrapper']['tmp_path']}/chef_server_details.sh"
 
-default['chef_server_wrapper']['frontend_secrets_script_path'] =
+default['chef_server_wrapper']['frontend_script_path'] =
   "#{node['chef_server_wrapper']['tmp_path']}/frontend_secrets.sh"
 
 default['chef_server_wrapper']['starter_pack_user'] = ''
