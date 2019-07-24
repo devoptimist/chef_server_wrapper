@@ -117,7 +117,7 @@ config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname !=
 # exisiting cluster with a frontend.
 # The attribute frontend_secrets would be taken from the existing frontend node
 
-node['chef_server_wrapper']['frontend_secrets'] = {} if node['chef_server_wrapper']['frontend_secrets'].nil? 
+node.default['chef_server_wrapper']['frontend_secrets'] = {} if node['chef_server_wrapper']['frontend_secrets'].nil? 
 
 template '/etc/opscode/private-chef-secrets.json' do
   source 'private-chef-secrets.json.erb'
