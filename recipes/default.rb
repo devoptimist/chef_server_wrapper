@@ -92,11 +92,8 @@ config += if node['chef_server_wrapper']['data_collector_token'] != ''
             EOF
           end
 
-template '/etc/opscode/private-chef-secrets.json' do
-  source 'private-chef-secrets.json.erb'
-  variables(
-    data: node['chef_server_wrapper']['frontend_secrets']
-  )
+directory '/etc/opscode' do
+  action :create
   only_if { node['chef_server_wrapper']['frontend_secrets'] != '' }
 end
 
@@ -114,6 +111,30 @@ config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname !=
             <<~EOF
             EOF
           end
+
+# The following file and directory resources are used
+# when configuring additional chef server frontends to an
+# exisiting cluster with a frontend.
+# The attribute frontend_secrets would be taken from the existing frontend node
+
+template '/etc/opscode/private-chef-secrets.json' do
+  source 'private-chef-secrets.json.erb'
+  variables(
+    data: node['chef_server_wrapper']['frontend_secrets']
+  )
+  only_if { node['chef_server_wrapper']['frontend_secrets'] != '' }
+end
+
+directory '/var/opt/opscode/upgrades/' do
+  action :create
+  recursive true
+  only_if { node['chef_server_wrapper']['frontend_secrets'] != '' }
+end
+
+file '/var/opt/opscode/bootstrapped' do
+  action :create_if_missing
+  only_if { node['chef_server_wrapper']['frontend_secrets'] != '' }
+end
 
 chef_ingredient 'chef-server' do
   channel node['chef_server_wrapper']['channel'].to_sym
