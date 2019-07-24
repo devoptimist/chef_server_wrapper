@@ -193,6 +193,6 @@ template node['chef_server_wrapper']['details_script_path'] do
   )
 end
 
-cookbook_file ndoe['chef_server_wrapper']['frontend_script_path'] do
+cookbook_file node['chef_server_wrapper']['frontend_script_path'] do
   source 'frontend_secrets.sh'
 end
