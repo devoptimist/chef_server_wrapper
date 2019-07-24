@@ -4,11 +4,11 @@ maintainer_email 'sbrown@chef.io'
 license 'Apache-2.0'
 description 'Installs/Configures a chef server'
 long_description 'Installs/Configures a chef server'
-version '0.1.32'
+version '0.1.33'
 chef_version '>= 13.0'
 depends 'chef-ingredient'
 
-%w(redhat centos debian ubuntu).each do |os|
+%w(redhat centos debian ubuntu suse).each do |os|
   supports os
 end
 

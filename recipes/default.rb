@@ -92,6 +92,14 @@ config += if node['chef_server_wrapper']['data_collector_token'] != ''
             EOF
           end
 
+template '/etc/opscode/private-chef-secrets.json' do
+  source 'private-chef-secrets.json.erb'
+  variables(
+    data: node['chef_server_wrapper']['frontend_secrets']
+  )
+  only_if { node['chef_server_wrapper']['frontend_secrets'] != '' }
+end
+
 remote_file '/bin/jq' do
   source node['chef_server_wrapper']['jq_url']
   mode '0755'
@@ -183,4 +191,8 @@ template node['chef_server_wrapper']['details_script_path'] do
     validation_pem: lazy { read_pem('org', node['chef_server_wrapper']['starter_pack_org']).inspect },
     fqdn: hostname
   )
+end
+
+cookbook_file ndoe['chef_server_wrapper']['frontend_secrets_script_path'] do
+  source 'frontend_secrets.sh'
 end

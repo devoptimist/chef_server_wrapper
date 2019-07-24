@@ -17,11 +17,17 @@ default['chef_server_wrapper']['starter_pack_knife_rb_path'] =
 default['chef_server_wrapper']['details_script_path'] =
   "#{node['chef_server_wrapper']['tmp_path']}/chef_server_details.sh"
 
+default['chef_server_wrapper']['frontend_secrets_script_path'] =
+  "#{node['chef_server_wrapper']['tmp_path']}/frontend_secrets.sh"
+
 default['chef_server_wrapper']['starter_pack_user'] = ''
 default['chef_server_wrapper']['starter_pack_org'] = ''
 default['chef_server_wrapper']['fqdn'] = ''
 default['chef_server_wrapper']['jq_url'] = 'https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64'
 default['chef_server_wrapper']['cloud_public_address'] = false
+
+# frontend secrets
+default['chef_server_wrapper']['frontend_secrets'] = ''
 
 # SSL certificate related attribures
 default['chef_server_wrapper']['cert'] = ''
