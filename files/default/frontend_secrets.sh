@@ -15,8 +15,8 @@ if [[ -f /etc/opscode/private-chef-secrets.json ]]; then
   "veil_cipher_key":"${veil_cipher_key}",
   "veil_cipher_iv":"${veil_cipher_iv}",
   "veil_credentials":"${veil_credentials}",
-  "migration_major":${migration_major},
-  "migration_minor":${migration_minor}
+  "migration_major":"${migration_major}",
+  "migration_minor":"${migration_minor}"
 }
 EOF
   )
