@@ -120,6 +120,12 @@ config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname !=
 # fix for passing data from terraform
 node.override['chef_server_wrapper']['frontend_secrets'] = {} if node['chef_server_wrapper']['frontend_secrets'].nil? 
 
+directory '/var/opt/opscode/upgrades/' do
+  action :create
+  recursive true
+  not_if { node['chef_server_wrapper']['frontend_secrets'].empty? }
+end
+
 template '/etc/opscode/private-chef-secrets.json' do
   source 'private-chef-secrets.json.erb'
   variables(
@@ -138,12 +144,6 @@ template '/var/opt/opscode/upgrades/migration-level' do
     major: node['chef_server_wrapper']['frontend_secrets']['migration_major'],
     minor: node['chef_server_wrapper']['frontend_secrets']['migration_minor']
   )
-  not_if { node['chef_server_wrapper']['frontend_secrets'].empty? }
-end
-
-directory '/var/opt/opscode/upgrades/' do
-  action :create
-  recursive true
   not_if { node['chef_server_wrapper']['frontend_secrets'].empty? }
 end
 
