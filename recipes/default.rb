@@ -132,6 +132,15 @@ template '/etc/opscode/private-chef-secrets.json' do
   not_if { node['chef_server_wrapper']['frontend_secrets'].empty? }
 end
 
+template '/var/opt/opscode/upgrades/migration-level' do
+  source 'migration-level.erb'
+  variables(
+    major: node['chef_server_wrapper']['frontend_secrets']['migration_major'],
+    minor: node['chef_server_wrapper']['frontend_secrets']['migration_minor']
+  )
+  not_if { node['chef_server_wrapper']['frontend_secrets'].empty? }
+end
+
 directory '/var/opt/opscode/upgrades/' do
   action :create
   recursive true
