@@ -50,9 +50,12 @@ if node['chef_server_wrapper']['cert'] != '' &&
     group 'root'
   end
 
+  # rabbitmq managmenent disabled when using non chef
+  # generated certs see: https://github.com/chef/chef-server/issues/1418
   config += <<~EOF
               nginx['ssl_certificate']  = "#{cert_path}"
               nginx['ssl_certificate_key']  = "#{cert_key_path}"
+              rabbitmq['management_enabled'] = false
               EOF
 end
 
