@@ -6,9 +6,9 @@ description 'Installs/Configures a chef server'
 long_description 'Installs/Configures a chef server'
 version '0.1.46'
 chef_version '>= 13.0'
-depends 'chef-ingredient'
+depends 'chef-ingredient', '3.1.1'
 
-%w(redhat centos debian ubuntu suse).each do |os|
+%w[redhat centos debian ubuntu suse].each do |os|
   supports os
 end
 

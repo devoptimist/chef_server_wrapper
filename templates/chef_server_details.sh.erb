@@ -4,8 +4,9 @@ set -eu -o pipefail
   VAR1=$(cat <<EOF
 {
   "validation_pem": <%= @validation_pem %>,
-  "validation_client_name": "<%= @org %>-validation",
+  "validation_client_name": "<%= @org %>-validator",
   "client_pem": <%= @client_pem %>,
+  "org_name": "<%= @org %>",
   "org_url": "https://<%= @fqdn %>/organizations/<%= @org %>",
   "base_url": "https://<%= @fqdn %>",
   "node_name": "<%= @user %>"
@@ -18,6 +19,7 @@ EOF
   "validation_pem": "",
   "validation_client_name": "",
   "client_pem": "",
+  "org_name": "",
   "org_url": "",
   "base_url": "https://<%= @fqdn %>",
   "node_name": ""
