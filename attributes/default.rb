@@ -25,6 +25,11 @@ default['chef_server_wrapper']['starter_pack_org'] = ''
 default['chef_server_wrapper']['fqdn'] = ''
 default['chef_server_wrapper']['jq_url'] = 'https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64'
 default['chef_server_wrapper']['cloud_public_address'] = false
+default['chef_server_wrapper']['ctl_command'] = if node['chef_server_wrapper']['accept_license'].to_s == 'true'
+                                                  'chef-server-ctl reconfigure --chef-license accept'
+                                                else
+                                                  'chef-server-ctl reconfigure'
+                                                end
 
 # frontend secrets
 default['chef_server_wrapper']['frontend_secrets'] = {}

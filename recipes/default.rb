@@ -1,4 +1,5 @@
-#
+# frozen_string_literal: true
+
 # Cookbook:: chef_server_wrapper
 # Recipe:: default
 #
@@ -18,10 +19,10 @@ config = if node['chef_server_wrapper']['config_block'] != {}
            ''
          end
 
-config += <<~EOF
+config += <<~CONFIG
 
   #{node['chef_server_wrapper']['config']}
-  EOF
+CONFIG
 
 if node['chef_server_wrapper']['cert'] != '' &&
    node['chef_server_wrapper']['cert_key'] != ''
@@ -52,47 +53,45 @@ if node['chef_server_wrapper']['cert'] != '' &&
 
   # rabbitmq managmenent disabled when using non chef
   # generated certs see: https://github.com/chef/chef-server/issues/1418
-  config += <<~EOF
-              nginx['ssl_certificate']  = "#{cert_path}"
-              nginx['ssl_certificate_key']  = "#{cert_key_path}"
-              rabbitmq['management_enabled'] = false
-              EOF
+  config += <<~CONFIG
+    nginx['ssl_certificate']  = "#{cert_path}"
+    nginx['ssl_certificate_key']  = "#{cert_key_path}"
+    rabbitmq['management_enabled'] = false
+  CONFIG
 end
 
 config += if node['chef_server_wrapper']['supermarket_url'] != ''
-            <<~EOF
-            oc_id['applications'] ||= {}
-            oc_id['applications']['supermarket'] = {
-              'redirect_uri' => 'https://#{node['chef_server_wrapper']['supermarket_url']}/auth/chef_oauth2/callback'
-            }
-
-            EOF
+            <<~CONFIG
+              oc_id['applications'] ||= {}
+              oc_id['applications']['supermarket'] = {
+                'redirect_uri' => 'https://#{node['chef_server_wrapper']['supermarket_url']}/auth/chef_oauth2/callback'
+              }
+            CONFIG
           else
-            <<~EOF
-            EOF
+            <<~CONFIG
+            CONFIG
           end
 
 config += if node['chef_server_wrapper']['data_collector_url'] != ''
-            <<~EOF
-            data_collector['root_url'] = '#{node['chef_server_wrapper']['data_collector_url']}/data-collector/v0/'
-            data_collector['proxy'] = true
-            profiles['root_url'] = '#{node['chef_server_wrapper']['data_collector_url']}'
-
-            EOF
+            <<~CONFIG
+              data_collector['root_url'] = '#{node['chef_server_wrapper']['data_collector_url']}/data-collector/v0/'
+              data_collector['proxy'] = true
+              profiles['root_url'] = '#{node['chef_server_wrapper']['data_collector_url']}'
+            CONFIG
           else
-            <<~EOF
-            EOF
+            <<~CONFIG
+            CONFIG
 
           end
 
 config += if node['chef_server_wrapper']['data_collector_token'] != ''
-            <<~EOF
-            data_collector['token'] =  '#{node['chef_server_wrapper']['data_collector_token']}'
+            <<~CONFIG
+              data_collector['token'] =  '#{node['chef_server_wrapper']['data_collector_token']}'
 
-            EOF
+            CONFIG
           else
-            <<~EOF
-            EOF
+            <<~CONFIG
+            CONFIG
           end
 
 directory '/etc/opscode' do
@@ -106,13 +105,13 @@ remote_file '/bin/jq' do
 end
 
 config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname != node['ipaddress']
-            <<~EOF
-            api_fqdn = '#{hostname}'
+            <<~CONFIG
+              api_fqdn = '#{hostname}'
 
-            EOF
+            CONFIG
           else
-            <<~EOF
-            EOF
+            <<~CONFIG
+            CONFIG
           end
 
 # The following file and directory resources are used
@@ -121,7 +120,7 @@ config += if hostname != node['cloud']['public_ipv4_addrs'].first && hostname !=
 # The attribute frontend_secrets would be taken from the existing frontend node
 
 # fix for passing data from terraform
-node.override['chef_server_wrapper']['frontend_secrets'] = {} if node['chef_server_wrapper']['frontend_secrets'].nil? 
+node.override['chef_server_wrapper']['frontend_secrets'] = {} if node['chef_server_wrapper']['frontend_secrets'].nil?
 
 directory '/var/opt/opscode/upgrades/' do
   action :create
@@ -159,8 +158,8 @@ chef_ingredient 'chef-server' do
   channel node['chef_server_wrapper']['channel'].to_sym
   version node['chef_server_wrapper']['version']
   config config
-  ctl_command 'chef-server-ctl reconfigure --chef-license accept' if node['chef_server_wrapper']['accept_license'].to_s == 'true'
-  action %i(install reconfigure)
+  ctl_command node['chef_server_wrapper']['ctl_command']
+  action %i[install reconfigure]
 end
 
 execute 'chef-server-reconfigure-first-boot' do
@@ -209,15 +208,6 @@ if node['chef_server_wrapper']['chef_orgs'] != {} &&
       org_full_name params['org_full_name']
       admins params['admins']
     end
-  end
-
-  template node['chef_server_wrapper']['starter_pack_knife_rb_path'] do
-    source 'knife.rb.erb'
-    variables(
-      user: node['chef_server_wrapper']['starter_pack_user'],
-      org: node['chef_server_wrapper']['starter_pack_org'],
-      fqdn: hostname
-    )
   end
 end
 
