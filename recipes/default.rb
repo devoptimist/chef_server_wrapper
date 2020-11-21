@@ -5,6 +5,13 @@
 #
 # Copyright:: 2019, The Authors, All Rights Reserved.
 
+# suse hostname fix - sles 12 sp5
+if platform_family?('suse') && File.readlines('/etc/hosts').grep(/`hostname`/).empty?
+  open('/etc/hosts', 'a') do |f|
+    f << "127.0.0.1 #{`hostname`}"
+  end
+end
+
 hostname = if node['chef_server_wrapper']['fqdn'] != ''
              node['chef_server_wrapper']['fqdn']
            elsif node['cloud'] && node['chef_server_wrapper']['cloud_public_address']
